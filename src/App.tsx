@@ -51,11 +51,19 @@ const App: React.FC = (): JSX.Element => {
       const cells = fillingStart.cells;
       const cols = field.cols;
 
-      if (i === 0) {
+      if (i % cols === 0) {
         if (cells[i + 1]) counter++;
+        if (cells[i - cols]) counter++;
         if (cells[i + cols]) counter++;
+        if (cells[i - cols + 1]) counter++;
         if (cells[i + cols + 1]) counter++;
-      } else if (i % cols) {
+      } else if ((i + 1) % cols === 0) {
+        if (cells[i - 1]) counter++;
+        if (cells[i - cols]) counter++;
+        if (cells[i + cols]) counter++;
+        if (cells[i - cols - 1]) counter++;
+        if (cells[i + cols - 1]) counter++;
+      } else {
         if (cells[i - 1]) counter++;
         if (cells[i + 1]) counter++;
         if (cells[i - cols]) counter++;
@@ -63,12 +71,6 @@ const App: React.FC = (): JSX.Element => {
         if (cells[i - cols - 1]) counter++;
         if (cells[i - cols + 1]) counter++;
         if (cells[i + cols - 1]) counter++;
-        if (cells[i + cols + 1]) counter++;
-      } else {
-        if (cells[i + 1]) counter++;
-        if (cells[i - cols]) counter++;
-        if (cells[i + cols]) counter++;
-        if (cells[i - cols + 1]) counter++;
         if (cells[i + cols + 1]) counter++;
       }
 

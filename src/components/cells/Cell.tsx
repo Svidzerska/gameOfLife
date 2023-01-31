@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Cell: React.FC<Props> = ({ className, id, flex_basis, onSelect }): JSX.Element => {
-  return <div className={className} onSelect={() => onSelect(id)} style={{ flexBasis: `${flex_basis}%` }}></div>;
+  return <div className={className} onClick={() => onSelect(id)} style={{ flexBasis: `${flex_basis}%` }}></div>;
 };
 
 export default Cell;
