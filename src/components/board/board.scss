@@ -1,0 +1,16 @@
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  line-height: 0;
+  background-color: #555;
+  border: 10px solid #555;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5), -5px -3px 20px rgba(0, 0, 0, 0.5);
+}
+
+.board h4 {
+  text-align: center;
+  background-color: #555;
+  font-weight: normal;
+  margin-top: 12px;
+}
