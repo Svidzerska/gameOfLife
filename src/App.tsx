@@ -136,6 +136,15 @@ const App: React.FC = (): JSX.Element => {
         width={field.cols * 10}
         onSelect={selectCell}
         generation={filling.generation}
+        color={
+          (filling.generation + 1) % 4 === 0
+            ? "blue"
+            : (filling.generation + 1) % 2 === 0
+            ? "green"
+            : (filling.generation + 2) % 4 === 0
+            ? "violet"
+            : "yellow"
+        }
       />
     </div>
   );

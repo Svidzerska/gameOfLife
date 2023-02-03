@@ -9,9 +9,10 @@ interface Props {
   flex_basis: number;
   generation: number;
   onSelect: Function;
+  color: string;
 }
 
-const Board: React.FC<Props> = ({ cells, width, flex_basis, generation, onSelect }): JSX.Element => {
+const Board: React.FC<Props> = ({ cells, width, flex_basis, generation, onSelect, color }): JSX.Element => {
   const arr = cells.map((cell: boolean, index: number) => {
     return (
       <Cell
@@ -20,6 +21,7 @@ const Board: React.FC<Props> = ({ cells, width, flex_basis, generation, onSelect
         className={cell ? "cell alive" : "cell dead"}
         onSelect={onSelect}
         flex_basis={flex_basis}
+        color={color}
       ></Cell>
     );
   });
