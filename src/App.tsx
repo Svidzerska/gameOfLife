@@ -4,12 +4,12 @@ import ButtonsGroup from "./components/button_group/ButtonGroup";
 import Board from "./components/board/Board";
 
 const App: React.FC = (): JSX.Element => {
-  const speed = 500;
+  // const speed = 500;
 
-  const field = {
-    rows: 10,
-    cols: 10,
-  };
+  // const field = {
+  //   rows: 20,
+  //   cols: 20,
+  // };
 
   const [filling, setFilling] = useState<{ cells: boolean[]; generation: number }>({
     cells: [],
@@ -18,16 +18,28 @@ const App: React.FC = (): JSX.Element => {
 
   const [intervalIdState, setIntervalIdState] = useState<NodeJS.Timer>();
 
+  const [setupWindow, setSetupWindow] = useState<boolean>(false);
+
+  const [rows, setRows] = useState<string>("10");
+  const [cols, setCols] = useState<string>("10");
+  const [speed, setSpeed] = useState<string>("500");
+
+  const [setting, setSetting] = useState<{ rows: number; cols: number; speed: number }>({
+    rows: 10,
+    cols: 10,
+    speed: 500,
+  });
+
+  useEffect(() => {
+    console.log(setting);
+  }, [setting]);
+
   useEffect(() => {
     seed();
-  }, []);
-
-  useEffect(() => {
-    console.log(filling);
-  }, [filling]);
+  }, [, setting]);
 
   const seed = (): void => {
-    const size = field.rows * field.cols;
+    const size = setting.rows * setting.cols;
     const cells = Array(size)
       .fill(false)
       .map((cell) => (cell = Math.floor(Math.random() * 4) === 1 ? true : false));
@@ -44,19 +56,12 @@ const App: React.FC = (): JSX.Element => {
   const run = (): void => {
     console.log(33333);
 
-    // The problem is that inside the setInterval callback,
-    //  the value of count does not change,
-    //  because we’ve created a closure with the value of
-    //  count set to 0 as it was when the effect callback ran.
-    //  Every second, this callback then calls setCount(0 + 1),
-    //  so the count never goes above 1.
-
     setFilling((f) => {
-      const size = field.rows * field.cols;
+      const size = setting.rows * setting.cols;
       const newCells = f.cells.slice(); // copy of array
 
       const cells = f.cells;
-      const cols = field.cols;
+      const cols = setting.cols;
 
       for (let i = 0; i < size; i++) {
         let counter = 0;
@@ -99,10 +104,9 @@ const App: React.FC = (): JSX.Element => {
   };
 
   const play = (): void => {
-    console.log(speed);
+    console.log(setting.speed);
     clearInterval(intervalIdState);
-    const intervalId = setInterval(() => run(), speed);
-    console.log(intervalId);
+    const intervalId = setInterval(() => run(), setting.speed);
     setIntervalIdState(intervalId);
   };
 
@@ -111,18 +115,45 @@ const App: React.FC = (): JSX.Element => {
   };
 
   const clear = (): void => {
-    const size = field.rows * field.cols;
+    const size = setting.rows * setting.cols;
     const cells = Array(size).fill(false);
     setFilling({ cells: cells, generation: 0 });
     clearInterval(intervalIdState);
   };
 
+  const setup = (): void => {
+    setSetupWindow(true);
+    clearInterval(intervalIdState);
+  };
+
+  const getSetting = (): void => {
+    const currentRows = +rows;
+    const currentCols = +cols;
+    const currentSpeed = +speed;
+
+    setSetting(() => {
+      return {
+        rows: !isNaN(currentRows) ? currentRows : 10,
+        cols: !isNaN(currentCols) ? currentCols : 10,
+        speed: !isNaN(currentSpeed) ? currentSpeed : 10,
+      };
+    });
+  };
+
   const getActions = (): any => {
     return [
       { name: "Play", action: () => play() },
+      {
+        name: "One Step",
+        action: () => {
+          clearInterval(intervalIdState);
+          run();
+        },
+      },
       { name: "Pause", action: () => pause() },
       { name: "Clear", action: () => clear() },
       { name: "Seed", action: () => seed() },
+      { name: "Setup", action: () => setup() },
     ];
   };
 
@@ -132,8 +163,8 @@ const App: React.FC = (): JSX.Element => {
       <ButtonsGroup actionsF={getActions} />
       <Board
         cells={filling.cells}
-        flex_basis={100 / field.cols}
-        width={field.cols * 10}
+        flex_basis={100 / setting.cols}
+        width={setting.cols * 10}
         onSelect={selectCell}
         generation={filling.generation}
         color={
@@ -146,6 +177,22 @@ const App: React.FC = (): JSX.Element => {
             : "yellow"
         }
       />
+      {setupWindow && (
+        <div className="setupGroup">
+          <input type="text" value={rows} onChange={(e) => setRows(e.target.value)} />
+          <input type="text" value={cols} onChange={(e) => setCols(e.target.value)} />
+          <input type="text" value={speed} onChange={(e) => setSpeed(e.target.value)} />
+          <button
+            type="submit"
+            onClick={() => {
+              setSetupWindow(false);
+              getSetting();
+            }}
+          >
+            Apply
+          </button>
+        </div>
+      )}
     </div>
   );
 };

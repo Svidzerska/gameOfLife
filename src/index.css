@@ -7,9 +7,5 @@ body {
   padding: 0;
   font-family: sans-serif;
   color: #eee;
-  background: #163528;
-  background: -webkit-radial-gradient(#398564, #23424c); /* 09151b */
-  background: -o-radial-gradient(#398564, #23424c);
-  background: -moz-radial-gradient(#398564, #23424c);
-  background: radial-gradient(#398564, #23424c);
+  background: #def7ec;
 }
