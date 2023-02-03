@@ -4,13 +4,6 @@ import ButtonsGroup from "./components/button_group/ButtonGroup";
 import Board from "./components/board/Board";
 
 const App: React.FC = (): JSX.Element => {
-  // const speed = 500;
-
-  // const field = {
-  //   rows: 20,
-  //   cols: 20,
-  // };
-
   const [filling, setFilling] = useState<{ cells: boolean[]; generation: number }>({
     cells: [],
     generation: 0,
@@ -29,10 +22,6 @@ const App: React.FC = (): JSX.Element => {
     cols: 10,
     speed: 500,
   });
-
-  useEffect(() => {
-    console.log(setting);
-  }, [setting]);
 
   useEffect(() => {
     seed();
